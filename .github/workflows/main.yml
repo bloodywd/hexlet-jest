@@ -9,6 +9,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Run Jest
-    run: |
-          npm test
+    - name: Use Node.js ${{ matrix.node-version }}
+        # Configures the node version used on GitHub-hosted runners
+        # https://github.com/actions/setup-node
+      uses: actions/setup-node@v1
+        # The Node.js version to configure
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install
+        # Install project
+      run: |
+          npm install
+        # Add environment variables
+      env:
+        CI: true
+      - name: Run Jest
+        # Run Linter
+        run: |
+          npm test -- --coverage --coverageProvider=v8
+
